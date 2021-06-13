@@ -1,5 +1,6 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Table;
 using System;
 using System.Threading.Tasks;
 
@@ -26,7 +27,12 @@ namespace DemoConsoleAppStorage
                 Console.WriteLine("Connection  not established");
                 Console.ReadLine();
             }
-            ProcessAsyncBlobStorage().GetAwaiter().GetResult();
+            Console.WriteLine("Demo of Blob Storage");
+
+            // ProcessAsyncBlobStorage().GetAwaiter().GetResult();
+
+            Console.WriteLine("Demo of Table Storage");
+            ProcessTableStorage().GetAwaiter().GetResult();
             Console.ReadLine();
         }
 
@@ -68,6 +74,18 @@ namespace DemoConsoleAppStorage
             Console.WriteLine();
             Console.ReadLine();
 
+        }
+
+        private static async Task ProcessTableStorage()
+        {
+            // Create new client
+            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+
+            // Retrieve a reference to the table if doesnt exist then it creates the table
+            CloudTable table = tableClient.GetTableReference("people");
+
+            // Create the table if it doesnt exist
+           await table.CreateIfNotExistsAsync();
         }
     }
 }
